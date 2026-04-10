@@ -64,6 +64,10 @@ linkedIn.query(queryOptions).then(response => {
 
 This package now includes a Model Context Protocol (MCP) server entrypoint using the official `@modelcontextprotocol/sdk`.
 
+> **Note:** The MCP server requires **Node.js 18 or later**, as required by `@modelcontextprotocol/sdk`.
+
+### Run from this repository (recommended for development)
+
 Install dependencies:
 
 ```bash
@@ -74,6 +78,14 @@ Start the MCP server over stdio:
 
 ```bash
 npm run mcp:start
+```
+
+### Run from an npm install (without cloning)
+
+If you are consuming this package from another project, start the MCP server with the published CLI command:
+
+```bash
+npx linkedin-jobs-mcp
 ```
 
 ### Available MCP Tool

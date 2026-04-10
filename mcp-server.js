@@ -1,4 +1,6 @@
+#!/usr/bin/env node
 const linkedIn = require("./index");
+const { version } = require("./package.json");
 const { McpServer } = require("@modelcontextprotocol/sdk/server/mcp.js");
 const { StdioServerTransport } = require("@modelcontextprotocol/sdk/server/stdio.js");
 const { z } = require("zod");
@@ -71,23 +73,18 @@ function summarizeJobs(jobs) {
   ].join("\n");
 }
 
-async function withStdoutSafeLogs(fn) {
-  const originalLog = console.log;
-  console.log = (...args) => {
-    console.error(...args);
+function createStderrLogger() {
+  return {
+    log: (...args) => console.error(...args),
+    warn: (...args) => console.error(...args),
+    error: (...args) => console.error(...args),
   };
-
-  try {
-    return await fn();
-  } finally {
-    console.log = originalLog;
-  }
 }
 
 function createServer() {
   const server = new McpServer({
     name: "linkedin-jobs-api",
-    version: "1.0.7",
+    version,
   });
 
   server.registerTool(
@@ -158,7 +155,10 @@ function createServer() {
     async (input) => {
       try {
         const queryOptions = normalizeQueryInput(input);
-        const jobs = await withStdoutSafeLogs(() => linkedIn.query(queryOptions));
+        const jobs = await linkedIn.query({
+          ...queryOptions,
+          logger: createStderrLogger(),
+        });
 
         return {
           content: [

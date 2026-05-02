@@ -128,11 +128,11 @@ Query.prototype.getSalary = function () {
 };
 
 Query.prototype.getHasVerification = function () {
-  return this.has_verification ? "true" : "false";
+  return this.has_verification ? "true" : "";
 };
 
 Query.prototype.getUnder10Applicants = function () {
-  return this.under_10_applicants ? "true" : "false";
+  return this.under_10_applicants ? "true" : "";
 };
 
 Query.prototype.getPage = function () {
